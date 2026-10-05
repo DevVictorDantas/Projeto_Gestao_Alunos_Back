@@ -42,7 +42,7 @@ class AlunoSaida(BaseModel):
     id: int
     nome: str
     idade: int
-    matricula: int
+    matricula: str
 
 # --------------------------------------------------------------------------
 # DISCIPLINA  (Desafio 2)

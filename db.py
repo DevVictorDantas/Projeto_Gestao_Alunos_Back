@@ -91,7 +91,7 @@ def criar_tabelas():
     id        SERIAL PRIMARY KEY,
     nome      VARCHAR(100) NOT NULL,
     idade     INTEGER,
-    matricula SERIAL UNIQUE NOT NULL
+    matricula VARCHAR(20) DEFAULT ('MAT' || LPAD(currval(pg_get_serial_sequence('alunos', 'id'))::TEXT, 6, '0')) UNIQUE NOT NULL
   );
 
     CREATE TABLE IF NOT EXISTS disciplinas (
@@ -142,7 +142,7 @@ def inserir_aluno(nome, idade):
 #   (Fazer aceitar filtros é o Desafio 1 — comece simples.)
 
 def listar_alunos(idade=None):
-  sql = "SELECT * FROM alunos"
+  sql = "SELECT nome, idade, matricula FROM alunos"
   condicoes = []
   parametros = []
   if idade is not None:
