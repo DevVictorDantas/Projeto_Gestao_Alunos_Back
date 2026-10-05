@@ -17,9 +17,9 @@ E explore em: http://127.0.0.1:8000/docs
 
 # DICA — o que você vai importar:
 from typing import List
-from fastapi import FastAPI, HTTPException, status
-from fastapi.responses import RedirectResponse
-from psycopg2.errors import UniqueViolation   # para tratar duplicidade
+from fastapi import FastAPI, HTTPException, status  # type: ignore[import-not-found]
+from fastapi.responses import RedirectResponse  # type: ignore[import-not-found]
+from psycopg2.errors import UniqueViolation  # type: ignore[reportMissingModuleSource]  # para tratar duplicidade
 import db
 from schemas import AlunoEntrada, AlunoAtualizacao, AlunoSaida, DisciplinaEntrada, DisciplinaSaida, UsuarioEntrada, UsuarioSaida, LoginOk, nota, mediaSaida
 import auth

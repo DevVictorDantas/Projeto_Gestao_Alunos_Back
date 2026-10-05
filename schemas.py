@@ -15,9 +15,9 @@ Boas práticas que você deve aplicar:
 
 # DICA — o que você vai importar:
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field  # type: ignore[reportMissingImports]
 from datetime import datetime
-from pydantic import EmailStr
+from pydantic import EmailStr  # type: ignore[reportMissingImports]
 
 # --------------------------------------------------------------------------
 # ALUNO
@@ -28,7 +28,6 @@ from pydantic import EmailStr
 class AlunoEntrada(BaseModel):
     nome: str = Field(min_length=1, max_length=100)
     idade: int = Field(ge=0, le=120)
-    matricula: str = Field(min_length=1, max_length=20)
 #
 # TODO: AlunoAtualizacao  (PATCH) — mesmos campos, mas TODOS Optional (=None),
 #   para o cliente enviar só o que quer mudar. (A matrícula não se altera.)
@@ -43,7 +42,7 @@ class AlunoSaida(BaseModel):
     id: int
     nome: str
     idade: int
-    matricula: str
+    matricula: int
 
 # --------------------------------------------------------------------------
 # DISCIPLINA  (Desafio 2)

@@ -27,10 +27,10 @@ referência ao escrever criar_tabelas().
 #   from psycopg2.extras import RealDictCursor   # faz o banco devolver dict, não tupla
 #   from dotenv import load_dotenv               # lê o arquivo .env
 import os
-import psycopg2
+import psycopg2  # type: ignore[reportMissingModuleSource]
 from typing import Optional
-from psycopg2.extras import RealDictCursor
-from dotenv import load_dotenv
+from psycopg2.extras import RealDictCursor  # type: ignore[reportMissingModuleSource]
+from dotenv import load_dotenv  # type: ignore[reportMissingModuleSource]
 # TODO: carregue as variáveis do .env (load_dotenv) e monte um CONFIG lendo
 #       DB_HOST, DB_NAME, DB_USER, DB_PASSWORD (dica: os.getenv com um padrão).
 
@@ -91,7 +91,7 @@ def criar_tabelas():
     id        SERIAL PRIMARY KEY,
     nome      VARCHAR(100) NOT NULL,
     idade     INTEGER,
-    matricula VARCHAR(20) UNIQUE NOT NULL
+    matricula SERIAL UNIQUE NOT NULL
   );
 
     CREATE TABLE IF NOT EXISTS disciplinas (
@@ -131,9 +131,9 @@ def criar_tabelas():
 #   INSERT na tabela alunos. Dica: use "RETURNING *" para já receber de volta
 #   a linha criada (com o id gerado pelo banco).
 
-def inserir_aluno(nome, idade, matricula):
-  sql = "INSERT INTO alunos (nome, idade, matricula) VALUES (%s, %s, %s) RETURNING id, nome, idade, matricula;"
-  aluno_criado = executar_sql(sql, (nome, idade, matricula))
+def inserir_aluno(nome, idade):
+  sql = "INSERT INTO alunos (nome, idade) VALUES (%s, %s) RETURNING id, nome, idade, matricula;"
+  aluno_criado = executar_sql(sql, (nome, idade))
   return aluno_criado
 
 #
@@ -170,14 +170,12 @@ def buscar_aluno(id):
 def atualizar_aluno(
   id: int, 
   nome: Optional[str] = None, 
-  idade: Optional[int] = None, 
-  matricula: Optional[str] = None
+  idade: Optional[int] = None
   ):  
   
   campos_atualizados = {
     "nome": nome,
-    "idade": idade,
-    "matricula": matricula
+    "idade": idade
   }
   
   ## k transforma em nome da coluna, v transforma em valor do campo
