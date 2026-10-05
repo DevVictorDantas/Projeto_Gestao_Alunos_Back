@@ -133,10 +133,37 @@ def criar_disciplina(disciplina: DisciplinaEntrada):
         return disciplina_criada
     except UniqueViolation:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Disciplina duplicada.")
-    
+
+  
 @app.get("/disciplinas")
 def listar_disciplinas():
     return db.listar_disciplinas()
+
+@app.get("/disciplinas/{id}")
+def buscar_disciplina(id: int):
+    disciplina = db.buscar_disciplina(id)
+    if disciplina is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Disciplina não encontrada.")
+    return disciplina
+
+@app.patch("/disciplinas/{id}")
+def atualizar_disciplina(id: int, disciplina: DisciplinaEntrada):
+    campos_atualizados = disciplina.model_dump(exclude_unset=True)
+    if not campos_atualizados:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Nenhum campo para atualizar.")
+    
+    disciplina_atualizada = db.atualizar_disciplina(id, **campos_atualizados)
+    if disciplina_atualizada is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Disciplina não encontrada.")
+    
+    return disciplina_atualizada
+
+@app.delete("/disciplinas/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def excluir_disciplina(id: int):
+    sucesso = db.excluir_disciplina(id)
+    if not sucesso:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Disciplina não encontrada.")
+    return None  # 204 No Content
 
 # ========================= MATRÍCULAS (Desafio 3) =========================
 # POST /alunos/{aluno_id}/matricular/{disciplina_id}
